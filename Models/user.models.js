@@ -25,6 +25,10 @@ const userSchema = new Schema(
       type: String,
       enum: ["USER", "ADMIN"],
       default: "USER"
+    },
+    bookings: {
+      type: [Types.ObjectId],
+      ref: "booking"
     }
   },
   {
@@ -34,4 +38,4 @@ const userSchema = new Schema(
   }
 );
 
-export const UserModel = model("User", userSchema);
+export const UserModel = model("user", userSchema);
