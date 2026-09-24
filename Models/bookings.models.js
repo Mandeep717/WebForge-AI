@@ -8,7 +8,7 @@ const bookingSchema = new Schema({
     },
     userId: {
         type: Types.ObjectId,
-        reference: "user",
+        ref: "user",
         required: [true, "User ID is required"]
     },
     purpose: {
@@ -29,7 +29,15 @@ const bookingSchema = new Schema({
     },
     endTimeDate: {
         type: Date,
-        required: [true, "End time and date is required"]
+        required: [true, "End time and date is required"],
+        validate: {
+            validate: {
+                validator: function (value) {
+                    return value > this.startTimeDate;
+                },
+                message: "End time must be after start time"
+            }
+        }
     }
 },{
     timestamps: true,
