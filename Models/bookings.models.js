@@ -1,48 +1,59 @@
-import {Schema, model, Types} from 'mongoose'
+import { Schema, model } from "mongoose";
 
-const bookingSchema = new Schema({
+const bookingSchema = new Schema(
+  {
     resourceId: {
-        type: Types.ObjectId,
-        ref: "resource",
-        required: [true, "Resource ID is required"]
+      type: Schema.Types.ObjectId,
+      ref: "Resource",
+      required: [true, "Resource ID is required"],
     },
+
     userId: {
-        type: Types.ObjectId,
-        ref: "user",
-        required: [true, "User ID is required"]
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: [true, "User ID is required"],
     },
+
     purpose: {
-        type: String,
-        required: [true, "Purpose of booking is required"],
-        trim: true
+      type: String,
+      required: [true, "Purpose of booking is required"],
+      trim: true,
+      minlength: [3, "Purpose must be at least 3 characters"],
     },
+
     bookingStatus: {
-        type: String,
-        enum: {
-            values: ['Accepted', 'Rejected', 'Pending', 'Cancelled'],
-            message: "Invalid booking status"
-        }
+      type: String,
+      enum: {
+        values: ["Accepted", "Rejected", "Pending", "Cancelled"],
+        message: "Invalid booking status",
+      },
+      default: "Pending",
     },
+
     startTimeDate: {
-        type: Date,
-        required: [true, "Start time and date is required"]
+      type: Date,
+      required: [true, "Start time and date is required"],
     },
+
     endTimeDate: {
-        type: Date,
-        required: [true, "End time and date is required"],
-        validate: {
-            validate: {
-                validator: function (value) {
-                    return value > this.startTimeDate;
-                },
-                message: "End time must be after start time"
-            }
-        }
-    }
-},{
+      type: Date,
+      required: [true, "End time and date is required"],
+      validate: {
+        validator: function (value) {
+          return value > this.startTimeDate;
+        },
+        message: "End time must be after start time",
+      },
+    },
+  },
+  {
     timestamps: true,
     versionKey: false,
-    strict: "throw"
-})
+    strict: "throw",
+  }
+);
 
-export const BookingModel = await model("booking", bookingSchema)
+bookingSchema.index({ resourceId: 1, startTimeDate: 1, endTimeDate: 1 });
+bookingSchema.index({ userId: 1, createdAt: -1 });
+
+export const BookingModel = model("Booking", bookingSchema);

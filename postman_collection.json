@@ -1,0 +1,115 @@
+{
+  "info": {
+    "name": "WebForge Campus Resource Booking API",
+    "description": "P04 Campus Resource Booking success and failure scenarios.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4000" },
+    { "key": "bookingId", "value": "" },
+    { "key": "resourceId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test Student\",\n  \"email\": \"test@example.com\",\n  \"password\": \"Password@123\"\n}" },
+            "url": "{{baseUrl}}/api/user"
+          }
+        },
+        {
+          "name": "Login User",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"student@webforge.com\",\n  \"password\": \"Password@123\"\n}" },
+            "url": "{{baseUrl}}/api/auth/login"
+          }
+        },
+        {
+          "name": "Current User",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/auth/me" }
+        }
+      ]
+    },
+    {
+      "name": "Resources",
+      "item": [
+        {
+          "name": "List Resources",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/resources" }
+        },
+        {
+          "name": "Create Resource - Admin",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"resourceName\": \"Innovation Lab\",\n  \"resourceType\": \"Laboratory\",\n  \"resourceLocation\": \"Block B - 101\",\n  \"availabilityStatus\": \"AVAILABLE\",\n  \"resourceCapacity\": 50\n}" },
+            "url": "{{baseUrl}}/api/admin/resources"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bookings",
+      "item": [
+        {
+          "name": "Create Booking",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"purpose\": \"AI club project meeting\",\n  \"startTimeDate\": \"2026-09-28T10:00:00.000Z\",\n  \"endTimeDate\": \"2026-09-28T12:00:00.000Z\"\n}" },
+            "url": "{{baseUrl}}/api/bookings/AI%20Lab"
+          }
+        },
+        {
+          "name": "My Bookings",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/bookings" }
+        },
+        {
+          "name": "Get Booking",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/bookings/{{bookingId}}" }
+        },
+        {
+          "name": "Cancel Booking",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/bookings/{{bookingId}}/cancel" }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "All Bookings",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/bookings" }
+        },
+        {
+          "name": "Approve Booking",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/admin/bookings/{{bookingId}}/approve" }
+        },
+        {
+          "name": "Reject Booking",
+          "request": { "method": "PATCH", "url": "{{baseUrl}}/api/admin/bookings/{{bookingId}}/reject" }
+        },
+        {
+          "name": "Update Resource Availability",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"availabilityStatus\": \"MAINTENANCE\"\n}" },
+            "url": "{{baseUrl}}/api/admin/resources/{{resourceId}}"
+          }
+        },
+        {
+          "name": "Dashboard",
+          "request": { "method": "GET", "url": "{{baseUrl}}/api/admin/dashboard" }
+        }
+      ]
+    }
+  ]
+}
