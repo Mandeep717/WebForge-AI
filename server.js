@@ -22,7 +22,7 @@ app.get("/", (req, res) => {
 app.use("/api", userRouter);
 app.use("/api/admin", adminRouter);
 
-// 404 handler
+// 404 handler func
 app.use((req, res) => {
   res.status(404).json({
     success: false,
